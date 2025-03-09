@@ -21,16 +21,16 @@ def load_users():
 
 
 intents = discord.Intents.default()
-intents.members = True  # ✅ Active l'intent pour récupérer les membres
-intents.reactions = True  # ✅ Nécessaire pour suivre les réactions
+intents.members = True  # Active l'intent pour récupérer les membres
+intents.reactions = True  # Nécessaire pour suivre les réactions
 bot = commands.Bot(command_prefix="!", intents=intents)
 tree = bot.tree  # Accès aux commandes slash
 
-CHANNEL_ID = 1327300404689506426
+CHANNEL_ID = 0  # ID du channel pour les rappels
 MENTIONED_USERS = load_users()  # Liste des utilisateurs à mentionner
 users_to_mention = set(MENTIONED_USERS)
 users_who_reacted = set()
-congrats_sent = False  # ✅ Ajout de cette variable pour éviter les doublons
+congrats_sent = False  # Ajout de cette variable pour éviter les doublons
 
 def save_users():
     with open("users.json", "w") as file:
@@ -42,14 +42,21 @@ def save_users():
 async def on_ready():
     print(f"✅ Connecté en tant que {bot.user}")
     try:
-        await bot.tree.sync()  # ✅ Force la synchronisation des commandes slash
+        await bot.tree.sync()  # Force la synchronisation des commandes slash
         print("✅ Commandes slash synchronisées pour TOUS les serveurs !")
         commands = await bot.tree.fetch_commands()
         print("📜 Commandes disponibles :", [cmd.name for cmd in commands])
     except Exception as e:
         print(f"⚠️ Erreur de synchronisation des commandes : {e}")
 
-    check_time.start()  # ✅ Démarrer la tâche dans on_ready()
+    check_time.start()  # Démarrer la tâche dans on_ready()
+
+# Commande pour definir le channel pour le rappel
+@bot.tree.command(name="setchannel", description="Définit le channel pour les rappels")
+async def setchannel(interaction: discord.Interaction, channel: discord.TextChannel):
+    global CHANNEL_ID
+    CHANNEL_ID = channel.id
+    await interaction.response.send_message(f"✅ Channel défini sur {channel.mention} !", ephemeral=True)
 
 # Commande pour ajouter un utilisateur
 @bot.tree.command(name="adduser", description="Ajoute un utilisateur à la liste des mentions")
@@ -57,10 +64,19 @@ async def adduser(interaction: discord.Interaction, member: discord.Member):
     if member.id not in MENTIONED_USERS:
         MENTIONED_USERS.add(member.id)
         users_to_mention.add(member.id)
-        save_users()  # ✅ Sauvegarde dans le JSON
+        save_users()  # Sauvegarde dans le JSON
         await interaction.response.send_message(f"✅ {member.mention} ajouté à la liste des mentions !", ephemeral=True)
     else:
         await interaction.response.send_message(f"⚠️ {member.mention} est déjà dans la liste !", ephemeral=True)
+
+# Commande pour lister les utilisateurs
+@bot.tree.command(name="listuser", description="Donne la liste des personnes à mentionner")
+async def listuser(interaction: discord.Interaction):
+    if MENTIONED_USERS:
+        mentions = "\n".join([f"<@{user_id}>" for user_id in MENTIONED_USERS])
+        await interaction.response.send_message(f"📜 Liste des mentions :\n{mentions}", ephemeral=True)
+    else:
+        await interaction.response.send_message("⚠️ Aucun utilisateur à mentionner !", ephemeral=True)
 
 # Commande pour supprimer un utilisateur
 @bot.tree.command(name="deluser", description="Supprime un utilisateur de la liste des mentions")
@@ -68,7 +84,7 @@ async def deluser(interaction: discord.Interaction, member: discord.Member):
     if member.id in MENTIONED_USERS:
         MENTIONED_USERS.remove(member.id)
         users_to_mention.discard(member.id)
-        save_users()  # ✅ Sauvegarde dans le JSON
+        save_users()  # Sauvegarde dans le JSON
         await interaction.response.send_message(f"✅ {member.mention} retiré de la liste des mentions !", ephemeral=True)
     else:
         await interaction.response.send_message(f"⚠️ {member.mention} n'est pas dans la liste !", ephemeral=True)
@@ -87,7 +103,7 @@ def reset_mentions():
     global users_to_mention, users_who_reacted, congrats_sent
     users_to_mention = set(MENTIONED_USERS)
     users_who_reacted.clear()
-    congrats_sent = False  # ✅ Réinitialise le message de félicitations chaque semaine
+    congrats_sent = False  # Réinitialise le message de félicitations chaque semaine
     print("🔄 Mentions et félicitations réinitialisées !")
 
 # Envoi du message quotidien
@@ -101,9 +117,9 @@ async def send_daily_message():
         message = await channel.send(f"📢 Rappel quotidien ! 📢\n Vous devez ajouter vos offres d'emplois sur iziA !! \n{mentions}")
         await message.add_reaction("✅")
     else:
-        if not congrats_sent:  # ✅ Vérifie si le message a déjà été envoyé cette semaine
+        if not congrats_sent:  # Vérifie si le message a déjà été envoyé cette semaine
             await channel.send("🥳 Bien joué la TEAM ! 🥳\n Vous avez tous ajouté vos offres d'emplois sur iziA !!")
-            congrats_sent = True  # ✅ Empêche l'envoi du message plusieurs fois
+            congrats_sent = True  # Empêche l'envoi du message plusieurs fois
 
 # Suivi des réactions pour retirer les utilisateurs mentionnés
 @bot.event

@@ -62,6 +62,7 @@ cd DiscordBot
 
 ```bash
 pip install -r discord
+pip install -r dotenv
 ```
 
 4️⃣ **Configurez votre bot** en ajoutant votre token Discord dans le fichier de configuration. 🛠️

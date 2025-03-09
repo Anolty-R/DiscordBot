@@ -18,6 +18,8 @@ J'ai créé ce bot parce que j'avais du mal avec les applications de rappel clas
 
 Voici les commandes que vous pouvez utiliser avec le bot :
 
+🔹 **`/listweekuser`** : Commande pour lister les utilisateurs à mentionnés CETTE SEMAINE. 📜
+
 🔹 **`/clear`** : Retire le lanceur de la commande des personnes à notifier dans la semaine. ❌
 
 🔹 **`/dailymessage`** : Affiche le message journalier pour la personne qui effectue la commande uniquement. 📨

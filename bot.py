@@ -19,8 +19,8 @@ def load_users():
 
 
 intents = discord.Intents.default()
-intents.members = True  # ✅ Active l'intent pour récupérer les membres
-intents.reactions = True  # ✅ Nécessaire pour suivre les réactions
+intents.members = True  # Active l'intent pour récupérer les membres
+intents.reactions = True  # Nécessaire pour suivre les réactions
 bot = commands.Bot(command_prefix="!", intents=intents)
 tree = bot.tree  # Accès aux commandes slash
 
@@ -28,7 +28,7 @@ CHANNEL_ID = 0  # ID du channel pour les rappels
 MENTIONED_USERS = load_users()  # Liste des utilisateurs à mentionner
 users_to_mention = set(MENTIONED_USERS)
 users_who_reacted = set()
-congrats_sent = False  # ✅ Ajout de cette variable pour éviter les doublons
+congrats_sent = False  # Ajout de cette variable pour éviter les doublons
 
 def save_users():
     with open("users.json", "w") as file:
@@ -40,7 +40,7 @@ def save_users():
 async def on_ready():
     print(f"✅ Connecté en tant que {bot.user}")
     try:
-        await bot.tree.sync()  # ✅ Force la synchronisation des commandes slash
+        await bot.tree.sync()  # Force la synchronisation des commandes slash
         print("✅ Commandes slash synchronisées pour TOUS les serveurs !")
         commands = await bot.tree.fetch_commands()
         print("📜 Commandes disponibles :", [cmd.name for cmd in commands])
@@ -110,7 +110,7 @@ async def deluser(interaction: discord.Interaction, member: discord.Member):
     if member.id in MENTIONED_USERS:
         MENTIONED_USERS.remove(member.id)
         users_to_mention.discard(member.id)
-        save_users()  # ✅ Sauvegarde dans le JSON
+        save_users()  # Sauvegarde dans le JSON
         await interaction.response.send_message(f"✅ {member.mention} retiré de la liste des mentions !", ephemeral=True)
     else:
         await interaction.response.send_message(f"⚠️ {member.mention} n'est pas dans la liste !", ephemeral=True)

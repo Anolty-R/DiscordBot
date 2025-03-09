@@ -49,6 +49,16 @@ async def on_ready():
 
     check_time.start()  # Démarrer la tâche dans on_ready()
 
+# Commande pour se retirer de la liste des mentions de la semaine
+@bot.tree.command(name="clear", description="Vous avez fait votre part, vous ne serez plus mentionné")
+async def clear(interaction: discord.Interaction):
+    print(f"❌ {interaction.user} a retiré sa mention de la semaine")
+    if interaction.user.id in users_to_mention:
+        users_to_mention.remove(interaction.user.id)
+        message = await interaction.response.send_message(f"✅ {interaction.user} tu ne seras plus mentionné cette semaine.", ephemeral=True)
+    else:
+        message = await interaction.response.send_message(f"⚠️ {interaction.user} tu n'es pas dans la liste des mentions pour cette semaine.", ephemeral=True)
+
 # Commande pour afficher le message journalier
 @bot.tree.command(name="dailymessage", description="Renvoi (en message éphémère) l'exemple du message journalier")
 async def dailymassage(interaction: discord.Interaction):

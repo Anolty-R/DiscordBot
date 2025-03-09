@@ -26,7 +26,7 @@ Voici les commandes que vous pouvez utiliser avec le bot :
 
 🔹 **`/adduser @utilisateur`** : Ajoute un utilisateur à la liste des personnes mentionnées. ➕
 
-🔹 **`/deluser @utilisateur`** : Supprime un utilisateur de la liste des personnes mentionnées. ❌
+🔹 **`/delluser @utilisateur`** : Supprime un utilisateur de la liste des personnes mentionnées. ❌
 
 ---
 

@@ -18,7 +18,7 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 
 def load_users():
     try:
-        with open("users.json", "r") as file:
+        with open("json/users.json", "r") as file:
             return set(json.load(file))  # Convertit en set pour éviter les doublons
     except (FileNotFoundError, json.JSONDecodeError):
         return set()
@@ -26,14 +26,14 @@ def load_users():
 
 
 def save_users():
-    with open("users.json", "w") as file:
+    with open("json/users.json", "w") as file:
         json.dump(list(MENTIONED_USERS), file, indent=4)
 
 
 
 def load_weekly_users():
     try:
-        with open("weekly_users.json", "r") as file:
+        with open("json/weekly_users.json", "r") as file:
             return set(json.load(file))
     except (FileNotFoundError, json.JSONDecodeError):
         return set(MENTIONED_USERS)
@@ -41,14 +41,14 @@ def load_weekly_users():
 
 
 def save_weekly_users():
-    with open("weekly_users.json", "w") as file:
+    with open("json/weekly_users.json", "w") as file:
         json.dump(list(users_to_mention), file, indent=4)
 
 
 
 def load_users_who_reacted():
     try:
-        with open("users_who_reacted.json", "r") as file:
+        with open("json/users_who_reacted.json", "r") as file:
             return set(json.load(file))
     except (FileNotFoundError, json.JSONDecodeError):
         return set(MENTIONED_USERS)
@@ -56,14 +56,14 @@ def load_users_who_reacted():
 
 
 def save_users_who_reacted():
-    with open("users_who_reacted.json", "w") as file:
+    with open("json/users_who_reacted.json", "w") as file:
         json.dump(list(users_who_reacted), file, indent=4)
 
 
 
 def load_channel_id():
     try:
-        with open("channel.json", "r") as file:
+        with open("json/channel.json", "r") as file:
             data = json.load(file)
             return data.get("channel_id", 0)
     except (FileNotFoundError, json.JSONDecodeError):
@@ -72,7 +72,7 @@ def load_channel_id():
 
 
 def save_channel_id(channel_id):
-    with open("channel.json", "w") as file:
+    with open("json/channel.json", "w") as file:
         json.dump({"channel_id": channel_id}, file, indent=4)
 
 

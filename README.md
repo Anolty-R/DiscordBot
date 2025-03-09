@@ -28,8 +28,31 @@ Voici les commandes que vous pouvez utiliser avec le bot :
 
 ---
 
-## 🚀 Dépendances
+## 🛠️ Installation
 
-1️⃣ **discord**
+1️⃣ **Clonez ce dépôt** :
 
-2️⃣ discord.py
+```bash
+git clone https://github.com/Anolty-R/DiscordBot.git
+```
+
+2️⃣ **Accédez au dossier du projet** :
+
+```bash
+cd DiscordBot
+```
+
+3️⃣ **Installez les dépendances requises** :
+
+```bash
+pip install -r discord
+pip install -r discord.py
+```
+
+4️⃣ **Configurez votre bot** en ajoutant votre token Discord dans le fichier de configuration. 🛠️
+5️⃣ **Lancez le bot** :
+
+```bash
+python bot.py
+```
+

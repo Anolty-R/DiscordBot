@@ -38,9 +38,9 @@ Voici les commandes que vous pouvez utiliser avec le bot :
 
 🔹 **`/listreactuser`** : Commande pour lister les utilisateurs qui ont réagi à un des messages du bot ou qui ont utilisé la commande /clear. 📜
 
-🔹 **`/addweekuser @utilisateur`** : Ajoute un utilisateur à la liste des utilisateurs qui ont réagi à un des messages du bot ou qui ont utilisé la commande /clear. ➕
+🔹 **`/addreactuser @utilisateur`** : Ajoute un utilisateur à la liste des utilisateurs qui ont réagi à un des messages du bot ou qui ont utilisé la commande /clear. ➕
 
-🔹 **`/delweekuser @utilisateur`** : Supprime un utilisateur de la liste des utilisateurs qui ont réagi à un des messages du bot ou qui ont utilisé la commande /clear. ❌
+🔹 **`/delreactuser @utilisateur`** : Supprime un utilisateur de la liste des utilisateurs qui ont réagi à un des messages du bot ou qui ont utilisé la commande /clear. ❌
 
 ---
 

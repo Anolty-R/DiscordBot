@@ -47,11 +47,12 @@ async def on_ready():
     except Exception as e:
         print(f"⚠️ Erreur de synchronisation des commandes : {e}")
 
-    check_time.start()  # ✅ Démarrer la tâche dans on_ready()
+    check_time.start()  # Démarrer la tâche dans on_ready()
 
 # Commande pour afficher le message journalier
 @bot.tree.command(name="dailymessage", description="Renvoi (en message éphémère) l'exemple du message journalier")
 async def dailymassage(interaction: discord.Interaction):
+    print(f"📜 {interaction.user} a demandé l'exemple du message journalier")
     global congrats_sent
 
     channel = bot.get_channel(CHANNEL_ID)
@@ -65,6 +66,7 @@ async def dailymassage(interaction: discord.Interaction):
 # Commande pour definir le channel pour le rappel
 @bot.tree.command(name="setchannel", description="Définit le channel pour les rappels")
 async def setchannel(interaction: discord.Interaction, channel: discord.TextChannel):
+    print(f"✅ {interaction.user} a défini le channel sur {channel}")
     global CHANNEL_ID
     CHANNEL_ID = channel.id
     await interaction.response.send_message(f"✅ Channel défini sur {channel.mention} !", ephemeral=True)
@@ -72,10 +74,11 @@ async def setchannel(interaction: discord.Interaction, channel: discord.TextChan
 # Commande pour ajouter un utilisateur
 @bot.tree.command(name="adduser", description="Ajoute un utilisateur à la liste des mentions")
 async def adduser(interaction: discord.Interaction, member: discord.Member):
+    print(f"✅ {interaction.user} a ajouté {member} à la liste des mentions")
     if member.id not in MENTIONED_USERS:
         MENTIONED_USERS.add(member.id)
         users_to_mention.add(member.id)
-        save_users()  # ✅ Sauvegarde dans le JSON
+        save_users()  # Sauvegarde dans le JSON
         await interaction.response.send_message(f"✅ {member.mention} ajouté à la liste des mentions !", ephemeral=True)
     else:
         await interaction.response.send_message(f"⚠️ {member.mention} est déjà dans la liste !", ephemeral=True)
@@ -83,6 +86,7 @@ async def adduser(interaction: discord.Interaction, member: discord.Member):
 # Commande pour lister les utilisateurs
 @bot.tree.command(name="listuser", description="Donne la liste des personnes à mentionner")
 async def listuser(interaction: discord.Interaction):
+    print(f"📜 {interaction.user} a demandé la liste des utilisateurs")
     if MENTIONED_USERS:
         mentions = "\n".join([f"<@{user_id}>" for user_id in MENTIONED_USERS])
         await interaction.response.send_message(f"📜 Liste des mentions :\n{mentions}", ephemeral=True)
@@ -90,8 +94,9 @@ async def listuser(interaction: discord.Interaction):
         await interaction.response.send_message("⚠️ Aucun utilisateur à mentionner !", ephemeral=True)
 
 # Commande pour supprimer un utilisateur
-@bot.tree.command(name="deluser", description="Supprime un utilisateur de la liste des mentions")
+@bot.tree.command(name="delluser", description="Supprime un utilisateur de la liste des mentions")
 async def deluser(interaction: discord.Interaction, member: discord.Member):
+    print(f"❌ {interaction.user} a supprimé {member} de la liste des mentions")
     if member.id in MENTIONED_USERS:
         MENTIONED_USERS.remove(member.id)
         users_to_mention.discard(member.id)
@@ -118,7 +123,7 @@ def reset_mentions():
     global users_to_mention, users_who_reacted, congrats_sent
     users_to_mention = set(MENTIONED_USERS)
     users_who_reacted.clear()
-    congrats_sent = False  # ✅ Réinitialise le message de félicitations chaque semaine
+    congrats_sent = False  # Réinitialise le message de félicitations chaque semaine
     print("🔄 Mentions et félicitations réinitialisées !")
 
 # Envoi du message quotidien
@@ -132,9 +137,9 @@ async def send_daily_message():
         message = await channel.send(f"📢 Rappel quotidien ! 📢\n Vous devez ajouter vos offres d'emplois sur iziA !! \n{mentions}")
         await message.add_reaction("✅")
     else:
-        if not congrats_sent:  # ✅ Vérifie si le message a déjà été envoyé cette semaine
+        if not congrats_sent:  # Vérifie si le message a déjà été envoyé cette semaine
             await channel.send("🥳 Bien joué la TEAM ! 🥳\n Vous avez tous ajouté vos offres d'emplois sur iziA !!")
-            congrats_sent = True  # ✅ Empêche l'envoi du message plusieurs fois
+            congrats_sent = True  # Empêche l'envoi du message plusieurs fois
 
 # Envoi du message de félicitations le dimanche
 async def send_congrats_message():

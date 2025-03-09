@@ -94,6 +94,7 @@ async def setchannel(interaction: discord.Interaction, channel: discord.TextChan
 # Commande pour ajouter un utilisateur à la liste des mentions
 @bot.tree.command(name="adduser", description="Ajoute un utilisateur à la liste des mentions")
 async def adduser(interaction: discord.Interaction, member: discord.Member):
+    print(f"✅ {interaction.user} a ajouté {member} aux mentions")
     if member.id not in MENTIONED_USERS:
         MENTIONED_USERS.add(member.id)
         users_to_mention.add(member.id)
@@ -106,18 +107,21 @@ async def adduser(interaction: discord.Interaction, member: discord.Member):
 # Commande pour lister les utilisateurs qui veulent etre mentionnés
 @bot.tree.command(name="listuser", description="Liste des personnes mentionnées chaque semaine")
 async def listuser(interaction: discord.Interaction):
+    print(f"📜 {interaction.user} a demandé la liste des mentions")
     mentions = "\n".join([f"<@{user_id}>" for user_id in MENTIONED_USERS])
     await interaction.response.send_message(f"📜 Liste des mentions :\n{mentions}", ephemeral=True)
 
 # Commande pour lister les utilisateurs mentionnés cette semaine
 @bot.tree.command(name="listweekuser", description="Liste des mentions pour la semaine en cours")
 async def listweekuser(interaction: discord.Interaction):
+    print(f"📜 {interaction.user} a demandé la liste des mentions de la semaine")
     mentions = "\n".join([f"<@{user_id}>" for user_id in users_to_mention])
     await interaction.response.send_message(f"📜 Mentions de la semaine :\n{mentions}", ephemeral=True)
 
 # Commande pour retirer un utilisateur de la liste des mentions
 @bot.tree.command(name="deluser", description="Supprime un utilisateur des mentions")
 async def deluser(interaction: discord.Interaction, member: discord.Member):
+    print(f"❌ {interaction.user} a retiré {member} des mentions")
     if member.id in MENTIONED_USERS:
         MENTIONED_USERS.remove(member.id)
         users_to_mention.discard(member.id)

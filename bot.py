@@ -212,12 +212,12 @@ async def addreactuser(interaction: discord.Interaction, member: discord.Member)
 @bot.tree.command(name="delreactuser", description="Ajouter un utilisateur à la liste des personnes ayant réagi / utilisé la commande /clear")
 async def delreactuser(interaction: discord.Interaction, member: discord.Member):
     print(f"✅ {interaction.user} a ajouté {member} a la liste des personnes ayant réagi / utilisé la commande /clear")
-    if member.id not in users_who_reacted:
+    if member.id in users_who_reacted:
         users_who_reacted.remove(member.id)
         save_users_who_reacted()
-        await interaction.response.send_message(f"✅ {member.mention} ajouté aux personnes ayant reagit / utilise la commande /clear", ephemeral=True)
+        await interaction.response.send_message(f"✅ {member.mention} supprime des personnes ayant reagit / utilise la commande /clear", ephemeral=True)
     else:
-        await interaction.response.send_message(f"⚠️ {member.mention} est déjà dans la liste des personnes ayant reagit / utilise la commande /clear", ephemeral=True)
+        await interaction.response.send_message(f"⚠️ {member.mention} n'est pas dans la liste des personnes ayant reagit / utilise la commande /clear", ephemeral=True)
 
 
 
@@ -307,7 +307,8 @@ async def send_daily_message():
 async def send_congrats_message():
     channel = bot.get_channel(CHANNEL_ID)
     mentions = " ".join([f"<@{user_id}>" for user_id in users_who_reacted])
-    await channel.send(f"🎉 Félicitations à {mentions} pour leur participation ! 🎉")
+    message = await channel.send(f"🎉 Félicitations à {mentions} pour leur participation ! 🎉")
+    await message.add_reaction("🎉")
 
 
 
@@ -315,14 +316,15 @@ async def send_congrats_message():
 async def send_last_day_message():
     channel = bot.get_channel(CHANNEL_ID)
     mentions = " ".join([f"<@{user_id}>" for user_id in users_to_mention])
-    await channel.send(f"📢 Dernier jour pour ajouter vos offres ! 📢\n{mentions}")
+    message = await channel.send(f"📢 Dernier jour pour ajouter vos offres ! 📢\n{mentions}")
+    await message.add_reaction("✅")
 
 
 
 # Événement déclenché quand un utilisateur réagit à un message
 @bot.event
 async def on_raw_reaction_add(payload):
-    print(f"🚀 Réaction captée ! Utilisateur: {payload.user_id}")
+    print(f"🚀 Réaction captée ! Utilisateur: {payload.user_id} - Emoji: {payload.emoji}")
     if payload.user_id == bot.user.id:
         print("🤖 Réaction ignorée (bot)")
         return
@@ -330,11 +332,15 @@ async def on_raw_reaction_add(payload):
         print(f"📢 Réaction dans le bon channel : {CHANNEL_ID}")
         if payload.user_id in users_to_mention:
             print(f"🟢 {payload.user_id} était dans la liste des mentions")
-            if payload.user_id not in users_who_reacted:
-                users_to_mention.remove(payload.user_id)
-                users_who_reacted.add(payload.user_id)
-                save_weekly_users()
-                print(f"✅ {payload.user_id} ne sera plus mentionné cette semaine.")
+            if payload.emoji.name == "✅":
+                print(f"✅ {payload.user_id} a réagi avec ✅")
+                if payload.user_id not in users_who_reacted:
+                    users_to_mention.remove(payload.user_id)
+                    users_who_reacted.add(payload.user_id)
+                    save_weekly_users()
+                    print(f"✅ {payload.user_id} ne sera plus mentionné cette semaine.")
+            else:
+                print(f"🔴 {payload.user_id} a réagi avec un autre emoji")
         else:
             print(f"🔴 {payload.user_id} n'était pas dans la liste des mentions")
     else:

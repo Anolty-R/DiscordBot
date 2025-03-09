@@ -32,15 +32,15 @@ Voici les commandes que vous pouvez utiliser avec le bot :
 
 🔹 **`/listweekuser`** : Commande pour lister les utilisateurs à mentionnés CETTE SEMAINE. 📜
 
-🔹 **`/addweekuser`** :  Ajoute un utilisateur à la liste des personnes mentionnées pour cette semaine. ➕
+🔹 **`/addweekuser @utilisateur`** :  Ajoute un utilisateur à la liste des personnes mentionnées pour cette semaine. ➕
 
-🔹 **`/delweekuser`** : Supprime un utilisateur de la liste des personnes mentionnées pour cette semaine. ❌
+🔹 **`/delweekuser @utilisateur`** : Supprime un utilisateur de la liste des personnes mentionnées pour cette semaine. ❌
 
 🔹 **`/listreactuser`** : Commande pour lister les utilisateurs qui ont réagi à un des messages du bot ou qui ont utilisé la commande /clear. 📜
 
-🔹 **`/addweekuser`** : Ajoute un utilisateur à la liste des utilisateurs qui ont réagi à un des messages du bot ou qui ont utilisé la commande /clear. ➕
+🔹 **`/addweekuser @utilisateur`** : Ajoute un utilisateur à la liste des utilisateurs qui ont réagi à un des messages du bot ou qui ont utilisé la commande /clear. ➕
 
-🔹 **`/delweekuser`** : Supprime un utilisateur de la liste des utilisateurs qui ont réagi à un des messages du bot ou qui ont utilisé la commande /clear. ❌
+🔹 **`/delweekuser @utilisateur`** : Supprime un utilisateur de la liste des utilisateurs qui ont réagi à un des messages du bot ou qui ont utilisé la commande /clear. ❌
 
 ---
 

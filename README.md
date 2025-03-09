@@ -18,6 +18,8 @@ J'ai créé ce bot parce que j'avais du mal avec les applications de rappel clas
 
 Voici les commandes que vous pouvez utiliser avec le bot :
 
+🔹 **`/dailymessage`** : Affiche le message journalier pour la personne qui effectue la commande uniquement. 📨
+
 🔹 **`/setchannel`** : Définit le salon où seront envoyés les rappels. 📢
 
 🔹 **`/listuser`** : Affiche la liste des utilisateurs qui souhaitent être mentionnés. 👥

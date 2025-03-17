@@ -338,6 +338,7 @@ async def on_raw_reaction_add(payload):
                     users_to_mention.remove(payload.user_id)
                     users_who_reacted.add(payload.user_id)
                     save_weekly_users()
+                    save_users_who_reacted()
                     print(f"✅ {payload.user_id} ne sera plus mentionné cette semaine.")
             else:
                 print(f"🔴 {payload.user_id} a réagi avec un autre emoji")

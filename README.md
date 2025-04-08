@@ -5,6 +5,7 @@ Un bot Discord personnel pour des rappels quotidiens. 📅
 ## ✨ Pourquoi ce bot ?
 
 J'ai créé ce bot parce que j'avais du mal avec les applications de rappel classiques. Souvent, je voyais la notification, mais je me disais "je le ferai plus tard", et je finissais par oublier. ❌ Je voulais aussi créer un rappel commun à plusieurs personnes. 👏
+
 💡 **Mais avec Discord, c'est différent !**  Lorsque je reçois une notification, j'ai le réflexe de cliquer dessus immédiatement. L'idée m'est donc venue de créer un bot qui m'enverrait des rappels directement sur Discord. **Résultat : je suis devenu plus productif !** ✅
 
 📌 Vous pouvez utiliser les commandes pour créer vos propres rappels personnalisés !

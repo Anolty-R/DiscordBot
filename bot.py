@@ -1,4 +1,5 @@
 import discord
+import re
 from discord.ext import tasks, commands
 from datetime import datetime
 import os
@@ -374,7 +375,7 @@ async def deluser(interaction: discord.Interaction, nom: str, member: discord.Me
                   description="Retire un utilisateur des remaining_users pour un rappel spécifique")
 async def delreactuser(interaction: discord.Interaction, nom: str, member: discord.Member):
     """
-    Retire un utilisateur des remaining_users pour un rappel spécifique.
+    Ajoute un utilisateur des remaining_users pour un rappel spécifique.
     - nom : Nom unique du rappel
     - member : Utilisateur Discord à retirer
     """
@@ -392,7 +393,7 @@ async def delreactuser(interaction: discord.Interaction, nom: str, member: disco
             )
         else:
             await interaction.response.send_message(
-                f"⚠️ {member.mention} n'est pas dans la liste des mentions pour le rappel `{nom}`.", ephemeral=True
+                f"⚠️ {member.mention} est déjà dans la liste des mentions pour le rappel `{nom}`.", ephemeral=True
             )
     except FileNotFoundError:
         await interaction.response.send_message(
@@ -405,7 +406,7 @@ async def delreactuser(interaction: discord.Interaction, nom: str, member: disco
                   description="Ajoute un utilisateur dans remaining_users pour un rappel spécifique")
 async def addreactuser(interaction: discord.Interaction, nom: str, member: discord.Member):
     """
-    Ajoute un utilisateur dans remaining_users pour un rappel spécifique.
+    Retire un utilisateur dans remaining_users pour un rappel spécifique.
     - nom : Nom unique du rappel
     - member : Utilisateur Discord à ajouter
     """
@@ -423,7 +424,7 @@ async def addreactuser(interaction: discord.Interaction, nom: str, member: disco
             )
         else:
             await interaction.response.send_message(
-                f"⚠️ {member.mention} est déjà dans la liste des mentions pour le rappel `{nom}`.", ephemeral=True
+                f"⚠️ {member.mention} n'est pas dans la liste des mentions pour le rappel `{nom}`.", ephemeral=True
             )
     except FileNotFoundError:
         await interaction.response.send_message(
@@ -498,31 +499,62 @@ async def listreactuser(interaction: discord.Interaction, nom: str):
 
 
 # Événement déclenché quand un utilisateur réagit à un message
+import re
+
+
 @bot.event
 async def on_raw_reaction_add(payload):
+    """
+    Gère les réactions des utilisateurs sur les messages.
+    Si le contenu du message (sans les mentions) correspond à un rappel et que l'utilisateur est dans `remaining_users`,
+    il est retiré de la liste.
+    """
     print(f"🚀 Réaction captée ! Utilisateur: {payload.user_id} - Emoji: {payload.emoji}")
+
+    # Ignorer les réactions du bot lui-même
     if payload.user_id == bot.user.id:
         print("🤖 Réaction ignorée (bot)")
         return
 
     try:
+        # Charger les rappels
         with open("json/reminders.json", "r") as file:
             reminders = json.load(file)
 
+        # Obtenir le channel et le message
+        channel = bot.get_channel(payload.channel_id)
+        if not channel:
+            print("⚠️ Channel introuvable.")
+            return
+
+        message = await channel.fetch_message(payload.message_id)
+
+        # Nettoyer le contenu du message pour supprimer les mentions
+        cleaned_message_content = re.sub(r"<@!?[0-9]+>", "", message.content).strip()
+
         for reminder in reminders:
             nom = reminder["nom"]
-            try:
-                with open(f"json/{nom}_remaining_users.json", "r") as file:
-                    remaining_users = json.load(file)
+            contenu = reminder["contenu"]
 
-                if payload.user_id in remaining_users["users"]:
-                    if payload.emoji.name == "✅":
+            # Vérifier si le contenu nettoyé du message correspond au rappel
+            if cleaned_message_content == contenu.strip():
+                try:
+                    # Charger les utilisateurs restants pour ce rappel
+                    with open(f"json/{nom}_remaining_users.json", "r") as file:
+                        remaining_users = json.load(file)
+
+                    # Vérifier si l'utilisateur est dans la liste des utilisateurs restants
+                    if payload.user_id in remaining_users["users"]:
+                        # Supprimer l'utilisateur de la liste
                         remaining_users["users"].remove(payload.user_id)
+
+                        # Sauvegarder les modifications
                         with open(f"json/{nom}_remaining_users.json", "w") as file:
                             json.dump(remaining_users, file, indent=4)
-                        print(f"✅ {payload.user_id} ne sera plus mentionné pour `{nom}` cette semaine.")
-            except FileNotFoundError:
-                continue
+
+                        print(f"✅ Utilisateur {payload.user_id} retiré de `remaining_users` pour `{nom}`.")
+                except FileNotFoundError:
+                    print(f"⚠️ Fichier `remaining_users` introuvable pour `{nom}`.")
     except FileNotFoundError:
         print("⚠️ Fichier de rappels introuvable.")
 
@@ -601,7 +633,7 @@ async def check_and_send_reminders():
                     remaining_mentions = "Aucun utilisateur restant à mentionner."
 
                 # Créer le message au format texte
-                message = f"{reminder['contenu']}\n{remaining_mentions}\n"
+                message_content = f"{reminder['contenu']}\n{remaining_mentions}\n"
 
                 # Envoyer le message dans le channel spécifié
                 try:
@@ -612,7 +644,9 @@ async def check_and_send_reminders():
                     if channel_id != 0:
                         channel = bot.get_channel(channel_id)
                         if channel:
-                            await channel.send(content=message)
+                            sent_message = await channel.send(content=message_content)
+                            # Ajouter une réaction ✅ au message envoyé
+                            await sent_message.add_reaction("✅")
                         else:
                             print(f"⚠️ Channel introuvable pour le rappel `{reminder['nom']}`.")
                     else:

@@ -1,14 +1,13 @@
 # 🤖 DiscordBot
 
-Un bot Discord personnel pour un rappel quotidien. 📅
+Un bot Discord personnel pour des rappels quotidiens. 📅
 
 ## ✨ Pourquoi ce bot ?
 
-J'ai créé ce bot parce que j'avais du mal avec les applications de rappel classiques. Souvent, je voyais la notification, mais je me disais *"je le ferai plus tard"* et je finissais par oublier. ❌
+J'ai créé ce bot parce que j'avais du mal avec les applications de rappel classiques. Souvent, je voyais la notification, mais je me disais "je le ferai plus tard", et je finissais par oublier. ❌ Je voulais aussi créer un rappel commun à plusieurs personnes. 👏
+💡 **Mais avec Discord, c'est différent !**  Lorsque je reçois une notification, j'ai le réflexe de cliquer dessus immédiatement. L'idée m'est donc venue de créer un bot qui m'enverrait des rappels directement sur Discord. **Résultat : je suis devenu plus productif !** ✅
 
-💡 **Mais avec Discord, c'est différent !** Lorsque je reçois une notification, j'ai le réflexe de cliquer dessus immédiatement. L'idée m'est donc venue de créer un bot qui m'enverrait des rappels directement sur Discord. **Résultat : je suis devenu plus productif !** ✅
-
-📌 Vous pouvez adapter ce bot à vos besoins, par exemple en lui faisant envoyer plusieurs messages à des horaires précis.
+📌 Vous pouvez utiliser les commandes pour créer vos propres rappels personnalisés !
 
 💭 Votre seule limite est votre imagination 💫.
 
@@ -18,29 +17,25 @@ J'ai créé ce bot parce que j'avais du mal avec les applications de rappel clas
 
 Voici les commandes que vous pouvez utiliser avec le bot :
 
-🔹 **`/clear`** : Retire l'executeur de la commande des personnes à notifier dans la semaine. ❌
+*Dans les commandes disponibles, `reminder` est le nom (unique) du rappel.
 
-🔹 **`/dailymessage`** : Affiche le message journalier pour la personne qui effectue la commande uniquement. 📨
+• **`/clear reminder`** : Retire l’exécuteur de la commande de la liste des personnes à notifier dans la semaine pour ledit rappel. ❌
 
-🔹 **`/setchannel`** : Définit le salon où seront envoyés les rappels. 📢
+• **`/setchannel reminder channel`** : Définit le salon où le rappel sera envoyé. 📢
 
-🔹 **`/listuser`** : Affiche la liste des utilisateurs qui souhaitent être mentionnés. 👥
+• **`/listuser reminder`** : Affiche la liste des utilisateurs qui souhaitent être mentionnés pour ledit rappel. 👥
 
-🔹 **`/adduser @utilisateur`** : Ajoute un utilisateur à la liste des personnes mentionnées. ➕
+• **`/adduser reminder @utilisateur`** : Ajoute un utilisateur à la liste des personnes mentionnées pour le rappel mentionné. ➕
 
-🔹 **`/delluser @utilisateur`** : Supprime un utilisateur de la liste des personnes mentionnées. ❌
+• **`/delluser reminder @utilisateur`** : Supprime un utilisateur de la liste des personnes mentionnées pour le rappel mentionné. ❌
 
-🔹 **`/listweekuser`** : Commande pour lister les utilisateurs à mentionnés CETTE SEMAINE. 📜
+• **`/listweekuser reminder`** : Liste les utilisateurs à mentionner cette semaine pour le rappel spécifié. 📜
 
-🔹 **`/addweekuser @utilisateur`** :  Ajoute un utilisateur à la liste des personnes mentionnées pour cette semaine. ➕
+• **`/listreactuser reminder`** : Liste les utilisateurs qui ont réagi à un des messages du bot ou qui ont utilisé la commande `/clear` pour le rappel spécifié. 📜
 
-🔹 **`/delweekuser @utilisateur`** : Supprime un utilisateur de la liste des personnes mentionnées pour cette semaine. ❌
+• **`/addreactuser reminder @utilisateur`** : Ajoute un utilisateur à la liste des personnes ayant réagi ou utilisé la commande `/clear` pour ledit rappel. ➕
 
-🔹 **`/listreactuser`** : Commande pour lister les utilisateurs qui ont réagi à un des messages du bot ou qui ont utilisé la commande /clear. 📜
-
-🔹 **`/addreactuser @utilisateur`** : Ajoute un utilisateur à la liste des utilisateurs qui ont réagi à un des messages du bot ou qui ont utilisé la commande /clear. ➕
-
-🔹 **`/delreactuser @utilisateur`** : Supprime un utilisateur de la liste des utilisateurs qui ont réagi à un des messages du bot ou qui ont utilisé la commande /clear. ❌
+• **`/delreactuser reminder @utilisateur`** : Supprime un utilisateur de la liste des personnes ayant réagi ou utilisé la commande `/clear` pour ledit rappel. ❌
 
 ---
 
@@ -61,8 +56,7 @@ cd DiscordBot
 3️⃣ **Installez les dépendances requises** :
 
 ```bash
-pip install -r discord
-pip install -r dotenv
+pip install -r requirements.txt
 ```
 
 4️⃣ **Configurez votre bot** en ajoutant votre token Discord dans le fichier de configuration. 🛠️

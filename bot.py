@@ -370,9 +370,9 @@ async def deluser(interaction: discord.Interaction, nom: str, member: discord.Me
 
 
 # Commande pour retirer un utilisateur des remaining_users pour un rappel spécifique
-@bot.tree.command(name="addreactuser",
+@bot.tree.command(name="delreactuser",
                   description="Retire un utilisateur des remaining_users pour un rappel spécifique")
-async def addreactuser(interaction: discord.Interaction, nom: str, member: discord.Member):
+async def delreactuser(interaction: discord.Interaction, nom: str, member: discord.Member):
     """
     Retire un utilisateur des remaining_users pour un rappel spécifique.
     - nom : Nom unique du rappel
@@ -401,9 +401,9 @@ async def addreactuser(interaction: discord.Interaction, nom: str, member: disco
 
 
 # Commande pour ajouter un utilisateur dans remaining_users pour un rappel spécifique
-@bot.tree.command(name="delreactuser",
+@bot.tree.command(name="addreactuser",
                   description="Ajoute un utilisateur dans remaining_users pour un rappel spécifique")
-async def delreactuser(interaction: discord.Interaction, nom: str, member: discord.Member):
+async def addreactuser(interaction: discord.Interaction, nom: str, member: discord.Member):
     """
     Ajoute un utilisateur dans remaining_users pour un rappel spécifique.
     - nom : Nom unique du rappel
